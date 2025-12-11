@@ -111,6 +111,10 @@ class ExtractionConfig(BaseModel):
     top_p: float = Field(default=0.1, ge=0.0, le=1.0)
     top_k: float = Field(default=5.0, ge=0.0)
     max_tokens: int = Field(default=10000, gt=0)
+    service_tier: Optional[str] = Field(
+        default=None,
+        description="Service tier for extraction (priority, standard, flex)",
+    )
     image: ImageConfig = Field(default_factory=ImageConfig)
     agentic: AgenticConfig = Field(default_factory=AgenticConfig)
     custom_prompt_lambda_arn: Optional[str] = Field(
@@ -159,6 +163,10 @@ class ClassificationConfig(BaseModel):
     top_p: float = Field(default=0.1, ge=0.0, le=1.0)
     top_k: float = Field(default=5.0, ge=0.0)
     max_tokens: int = Field(default=4096, gt=0)
+    service_tier: Optional[str] = Field(
+        default=None,
+        description="Service tier for classification (priority, standard, flex)",
+    )
     maxPagesForClassification: int = Field(
         default=0,
         description="Max pages to use for classification. 0 or negative = ALL pages, positive = limit to N pages",
@@ -242,6 +250,10 @@ class AssessmentConfig(BaseModel):
     enabled: bool = Field(default=True, description="Enable assessment")
     model: Optional[str] = Field(
         default=None, description="Bedrock model ID for assessment"
+    )
+    service_tier: Optional[str] = Field(
+        default=None,
+        description="Service tier for assessment (priority, standard, flex)",
     )
     system_prompt: str = Field(
         default="You are a document analysis assessment expert. Your role is to evaluate the confidence and accuracy of data extraction results by analyzing them against source documents.\n\nProvide accurate confidence scores for each assessment.",
@@ -347,6 +359,10 @@ class SummarizationConfig(BaseModel):
         default="us.amazon.nova-premier-v1:0",
         description="Bedrock model ID for summarization",
     )
+    service_tier: Optional[str] = Field(
+        default=None,
+        description="Service tier for summarization (priority, standard, flex)",
+    )
     system_prompt: str = Field(
         default="", description="System prompt for summarization"
     )
@@ -389,6 +405,10 @@ class OCRConfig(BaseModel):
     )
     model_id: Optional[str] = Field(
         default=None, description="Bedrock model ID for OCR (if backend=bedrock)"
+    )
+    service_tier: Optional[str] = Field(
+        default=None,
+        description="Service tier for OCR (priority, standard, flex) - only used when backend=bedrock",
     )
     system_prompt: Optional[str] = Field(
         default=None, description="System prompt for Bedrock OCR"
@@ -911,6 +931,10 @@ class IDPConfig(BaseModel):
     )
 
     notes: Optional[str] = Field(default=None, description="Configuration notes")
+    service_tier: Optional[str] = Field(
+        default="standard",
+        description="Global default service tier (priority, standard, flex)",
+    )
     ocr: OCRConfig = Field(default_factory=OCRConfig, description="OCR configuration")
     classification: ClassificationConfig = Field(
         default_factory=lambda: ClassificationConfig(model="us.amazon.nova-pro-v1:0"),

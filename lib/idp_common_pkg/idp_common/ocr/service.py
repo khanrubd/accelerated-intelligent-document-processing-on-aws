@@ -860,6 +860,13 @@ class OcrService:
             # Prepare content for Bedrock
             content = [{"text": self.bedrock_config["task_prompt"]}, image_content]
 
+            # Get service tier from config (operation-specific or global)
+            service_tier = None
+            if hasattr(self.config, "ocr") and hasattr(self.config.ocr, "service_tier"):
+                service_tier = self.config.ocr.service_tier
+            if not service_tier and hasattr(self.config, "service_tier"):
+                service_tier = self.config.service_tier
+
             # Invoke Bedrock
             response_with_metering = bedrock.invoke_model(
                 model_id=self.bedrock_config["model_id"],
@@ -870,6 +877,7 @@ class OcrService:
                 top_k=5,
                 max_tokens=4096,
                 context="OCR",
+                service_tier=service_tier,
             )
 
             # Extract text from response

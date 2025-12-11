@@ -852,6 +852,13 @@ class AssessmentService:
             # Time the model invocation
             request_start_time = time.time()
 
+            # Get service tier from config (operation-specific or global)
+            service_tier = None
+            if hasattr(self.config.assessment, "service_tier"):
+                service_tier = self.config.assessment.service_tier
+            if not service_tier and hasattr(self.config, "service_tier"):
+                service_tier = self.config.service_tier
+
             # Invoke Bedrock with the common library
             response_with_metering = bedrock.invoke_model(
                 model_id=model_id,
@@ -862,6 +869,7 @@ class AssessmentService:
                 top_p=top_p,
                 max_tokens=max_tokens,
                 context="Assessment",
+                service_tier=service_tier,
             )
 
             total_duration = time.time() - request_start_time

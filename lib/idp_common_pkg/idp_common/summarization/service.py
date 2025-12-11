@@ -95,6 +95,10 @@ class SummarizationService:
             "max_tokens": self.config.summarization.max_tokens,
         }
 
+        # Add service tier (operation-specific or global)
+        if hasattr(self.config.summarization, "service_tier"):
+            config["service_tier"] = self.config.summarization.service_tier
+
         # Validate system prompt
         system_prompt = self.config.summarization.system_prompt
         if not system_prompt:
@@ -124,6 +128,11 @@ class SummarizationService:
         Returns:
             Dictionary with response and metering data
         """
+        # Get service tier from config (operation-specific or global)
+        service_tier = config.get("service_tier")
+        if not service_tier and hasattr(self.config, "service_tier"):
+            service_tier = self.config.service_tier
+
         return bedrock.invoke_model(
             model_id=config["model_id"],
             system_prompt=config["system_prompt"],
@@ -133,6 +142,7 @@ class SummarizationService:
             top_p=config["top_p"],
             max_tokens=config["max_tokens"],
             context="Summarization",
+            service_tier=service_tier,
         )
 
     def _create_error_summary(self, error_message: str) -> DocumentSummary:

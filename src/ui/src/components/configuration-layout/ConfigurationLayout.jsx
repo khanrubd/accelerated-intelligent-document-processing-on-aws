@@ -22,6 +22,7 @@ import Editor from '@monaco-editor/react';
 import yaml from 'js-yaml';
 import useConfiguration from '../../hooks/use-configuration';
 import ConfigBuilder from './ConfigBuilder';
+import GlobalServiceTierSection from './GlobalServiceTierSection';
 import { deepMerge } from '../../utils/configUtils';
 
 const ConfigurationLayout = () => {
@@ -1230,18 +1231,20 @@ const ConfigurationLayout = () => {
 
           <Box padding="s">
             {viewMode === 'form' && (
-              <ConfigBuilder
-                schema={{
-                  ...schema,
-                  properties: Object.fromEntries(Object.entries(schema?.properties || {}).filter(([key]) => key !== 'classes')),
-                }}
-                formValues={formValues}
-                defaultConfig={defaultConfig}
-                isCustomized={isCustomized}
-                onResetToDefault={resetToDefault}
-                onChange={handleFormChange}
-                extractionSchema={extractionSchema}
-                onSchemaChange={(schemaData, isDirty) => {
+              <SpaceBetween size="l">
+                <GlobalServiceTierSection configuration={formValues} onConfigChange={handleFormChange} />
+                <ConfigBuilder
+                  schema={{
+                    ...schema,
+                    properties: Object.fromEntries(Object.entries(schema?.properties || {}).filter(([key]) => key !== 'classes')),
+                  }}
+                  formValues={formValues}
+                  defaultConfig={defaultConfig}
+                  isCustomized={isCustomized}
+                  onResetToDefault={resetToDefault}
+                  onChange={handleFormChange}
+                  extractionSchema={extractionSchema}
+                  onSchemaChange={(schemaData, isDirty) => {
                   setExtractionSchema(schemaData);
                   if (isDirty) {
                     const updatedConfig = { ...formValues };
@@ -1270,6 +1273,7 @@ const ConfigurationLayout = () => {
                   }
                 }}
               />
+              </SpaceBetween>
             )}
 
             {viewMode === 'json' && (

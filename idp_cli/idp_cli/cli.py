@@ -198,6 +198,12 @@ def cli():
     "--custom-config",
     help="Path to local config file or S3 URI (e.g., ./config.yaml or s3://bucket/config.yaml)",
 )
+@click.option(
+    "--service-tier",
+    type=click.Choice(["priority", "standard", "flex"]),
+    default="standard",
+    help="Service tier for Bedrock API calls (default: standard)",
+)
 @click.option("--parameters", help="Additional parameters as key=value,key2=value2")
 @click.option("--wait", is_flag=True, help="Wait for stack creation to complete")
 @click.option(
@@ -215,6 +221,7 @@ def deploy(
     enable_hitl: str,
     pattern_config: Optional[str],
     custom_config: Optional[str],
+    service_tier: str,
     parameters: Optional[str],
     wait: bool,
     no_rollback: bool,
@@ -915,6 +922,11 @@ def rerun_inference(
     type=int,
     help="Seconds between status checks (default: 5)",
 )
+@click.option(
+    "--service-tier",
+    type=click.Choice(["priority", "standard", "flex"]),
+    help="Service tier for Bedrock API calls (overrides configuration)",
+)
 @click.option("--region", help="AWS region (optional)")
 def run_inference(
     stack_name: str,
@@ -928,6 +940,7 @@ def run_inference(
     batch_prefix: str,
     monitor: bool,
     refresh_interval: int,
+    service_tier: Optional[str],
     region: Optional[str],
 ):
     """
