@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormField, Select } from '@cloudscape-design/components';
 import { SERVICE_TIER_OPTIONS, SERVICE_TIER_HELP_TEXT } from '../../constants/configTypes';
 
@@ -43,6 +44,13 @@ const GlobalServiceTierSection = ({ configuration, onConfigChange }) => {
       />
     </FormField>
   );
+};
+
+GlobalServiceTierSection.propTypes = {
+  configuration: PropTypes.shape({
+    service_tier: PropTypes.string,
+  }).isRequired,
+  onConfigChange: PropTypes.func.isRequired,
 };
 
 export default GlobalServiceTierSection;

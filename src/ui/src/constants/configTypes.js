@@ -40,6 +40,5 @@ export const SERVICE_TIER_OPERATION_OPTIONS = [
 export const SERVICE_TIER_HELP_TEXT = {
   global:
     'Choose the default service tier for all Bedrock API calls. Priority offers fastest response times at premium pricing, Standard provides consistent performance, and Flex offers cost savings with longer latency.',
-  operation:
-    'Override the global service tier for this specific operation. Select "Use Global Default" to inherit the global setting.',
+  operation: 'Override the global service tier for this specific operation. Select "Use Global Default" to inherit the global setting.',
 };

@@ -1245,34 +1245,34 @@ const ConfigurationLayout = () => {
                   onChange={handleFormChange}
                   extractionSchema={extractionSchema}
                   onSchemaChange={(schemaData, isDirty) => {
-                  setExtractionSchema(schemaData);
-                  if (isDirty) {
-                    const updatedConfig = { ...formValues };
-                    // CRITICAL: Always set classes, even if empty array (to support wipe all functionality)
-                    // Handle null (no classes) by setting empty array
-                    if (schemaData === null) {
-                      updatedConfig.classes = [];
-                    } else if (Array.isArray(schemaData)) {
-                      // Store as 'classes' field with JSON Schema content
-                      updatedConfig.classes = schemaData;
+                    setExtractionSchema(schemaData);
+                    if (isDirty) {
+                      const updatedConfig = { ...formValues };
+                      // CRITICAL: Always set classes, even if empty array (to support wipe all functionality)
+                      // Handle null (no classes) by setting empty array
+                      if (schemaData === null) {
+                        updatedConfig.classes = [];
+                      } else if (Array.isArray(schemaData)) {
+                        // Store as 'classes' field with JSON Schema content
+                        updatedConfig.classes = schemaData;
+                      }
+                      setFormValues(updatedConfig);
+                      setJsonContent(JSON.stringify(updatedConfig, null, 2));
+                      try {
+                        setYamlContent(yaml.dump(updatedConfig));
+                      } catch (e) {
+                        console.error('Error converting to YAML:', e);
+                      }
                     }
-                    setFormValues(updatedConfig);
-                    setJsonContent(JSON.stringify(updatedConfig, null, 2));
-                    try {
-                      setYamlContent(yaml.dump(updatedConfig));
-                    } catch (e) {
-                      console.error('Error converting to YAML:', e);
+                  }}
+                  onSchemaValidate={(valid, errors) => {
+                    if (!valid) {
+                      setValidationErrors(errors.map((e) => ({ message: `Schema: ${e.path} - ${e.message}` })));
+                    } else {
+                      setValidationErrors([]);
                     }
-                  }
-                }}
-                onSchemaValidate={(valid, errors) => {
-                  if (!valid) {
-                    setValidationErrors(errors.map((e) => ({ message: `Schema: ${e.path} - ${e.message}` })));
-                  } else {
-                    setValidationErrors([]);
-                  }
-                }}
-              />
+                  }}
+                />
               </SpaceBetween>
             )}
 

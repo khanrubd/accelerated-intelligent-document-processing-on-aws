@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormField, Select } from '@cloudscape-design/components';
 import { SERVICE_TIER_OPERATION_OPTIONS, SERVICE_TIER_HELP_TEXT } from '../../constants/configTypes';
 
@@ -19,10 +20,7 @@ const OperationServiceTierField = ({ value, onChange, globalTier = 'standard' })
   };
 
   return (
-    <FormField
-      label="Service Tier Override"
-      description={`${SERVICE_TIER_HELP_TEXT.operation} Current effective tier: ${effectiveTier}`}
-    >
+    <FormField label="Service Tier Override" description={`${SERVICE_TIER_HELP_TEXT.operation} Current effective tier: ${effectiveTier}`}>
       <Select
         selectedOption={SERVICE_TIER_OPERATION_OPTIONS.find((opt) => opt.value === value)}
         onChange={handleChange}
@@ -31,6 +29,17 @@ const OperationServiceTierField = ({ value, onChange, globalTier = 'standard' })
       />
     </FormField>
   );
+};
+
+OperationServiceTierField.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  globalTier: PropTypes.string,
+};
+
+OperationServiceTierField.defaultProps = {
+  value: null,
+  globalTier: 'standard',
 };
 
 export default OperationServiceTierField;
