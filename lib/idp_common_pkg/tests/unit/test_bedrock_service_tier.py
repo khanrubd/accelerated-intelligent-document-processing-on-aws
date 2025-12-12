@@ -44,10 +44,10 @@ class TestBedrockClientServiceTier:
             service_tier="priority",
         )
 
-        # Verify serviceTier was passed to API
+        # Verify serviceTier was passed to API as dictionary
         call_args = bedrock_client._client.converse.call_args
         assert "serviceTier" in call_args.kwargs
-        assert call_args.kwargs["serviceTier"] == "priority"
+        assert call_args.kwargs["serviceTier"] == {"type": "priority"}
 
     def test_service_tier_standard_normalized(
         self, bedrock_client, mock_bedrock_response
@@ -62,10 +62,10 @@ class TestBedrockClientServiceTier:
             service_tier="standard",
         )
 
-        # Verify serviceTier was normalized to "default"
+        # Verify serviceTier was normalized to "default" as dictionary
         call_args = bedrock_client._client.converse.call_args
         assert "serviceTier" in call_args.kwargs
-        assert call_args.kwargs["serviceTier"] == "default"
+        assert call_args.kwargs["serviceTier"] == {"type": "default"}
 
     def test_service_tier_flex(self, bedrock_client, mock_bedrock_response):
         """Test flex service tier is passed to API."""
@@ -78,10 +78,10 @@ class TestBedrockClientServiceTier:
             service_tier="flex",
         )
 
-        # Verify serviceTier was passed to API
+        # Verify serviceTier was passed to API as dictionary
         call_args = bedrock_client._client.converse.call_args
         assert "serviceTier" in call_args.kwargs
-        assert call_args.kwargs["serviceTier"] == "flex"
+        assert call_args.kwargs["serviceTier"] == {"type": "flex"}
 
     def test_service_tier_none(self, bedrock_client, mock_bedrock_response):
         """Test None service tier is not passed to API."""
@@ -124,9 +124,9 @@ class TestBedrockClientServiceTier:
             service_tier="PRIORITY",
         )
 
-        # Verify serviceTier was normalized to lowercase
+        # Verify serviceTier was normalized to lowercase as dictionary
         call_args = bedrock_client._client.converse.call_args
-        assert call_args.kwargs["serviceTier"] == "priority"
+        assert call_args.kwargs["serviceTier"] == {"type": "priority"}
 
     def test_service_tier_default_alias(self, bedrock_client, mock_bedrock_response):
         """Test 'default' is accepted as alias for 'standard'."""
@@ -139,6 +139,6 @@ class TestBedrockClientServiceTier:
             service_tier="default",
         )
 
-        # Verify serviceTier was passed as "default"
+        # Verify serviceTier was passed as "default" in dictionary
         call_args = bedrock_client._client.converse.call_args
-        assert call_args.kwargs["serviceTier"] == "default"
+        assert call_args.kwargs["serviceTier"] == {"type": "default"}

@@ -472,7 +472,7 @@ class BedrockClient:
 
         # Add service tier if specified
         if normalized_service_tier:
-            converse_params["serviceTier"] = normalized_service_tier
+            converse_params["serviceTier"] = {"type": normalized_service_tier}
             logger.info(f"Using service tier: {normalized_service_tier}")
 
         # Add guardrail config if available
