@@ -15,7 +15,9 @@ def test_flex_service_tier():
     client = boto3.client("bedrock-runtime", region_name=REGION)
     response = client.converse(
         modelId=MODEL_ID,
-        messages=[{"role": "user", "content": [{"text": "What is 2+2? Answer in one word."}]}],
+        messages=[
+            {"role": "user", "content": [{"text": "What is 2+2? Answer in one word."}]}
+        ],
         inferenceConfig={"maxTokens": 10},
         serviceTier={"type": "flex"},
     )
@@ -89,7 +91,9 @@ if __name__ == "__main__":
         print("✅ ALL TESTS PASSED")
         print("=" * 60)
         print("\nVerification:")
-        print("- serviceTier parameter correctly formatted as {'type': 'flex|priority|default'}")
+        print(
+            "- serviceTier parameter correctly formatted as {'type': 'flex|priority|default'}"
+        )
         print("- All service tiers work with Nova 2 Lite model")
         print("- Backward compatibility maintained (no serviceTier works)")
 
