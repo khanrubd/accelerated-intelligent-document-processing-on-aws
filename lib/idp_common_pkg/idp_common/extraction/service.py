@@ -926,13 +926,6 @@ class ExtractionService:
             metering = response_with_metering["metering"]
             parsing_succeeded = True
         else:
-            # Get service tier from config (operation-specific or global)
-            service_tier = None
-            if hasattr(self.config.extraction, "service_tier"):
-                service_tier = self.config.extraction.service_tier
-            if not service_tier and hasattr(self.config, "service_tier"):
-                service_tier = self.config.service_tier
-
             # Standard Bedrock invocation
             response_with_metering = bedrock.invoke_model(
                 model_id=model_id,
@@ -943,7 +936,6 @@ class ExtractionService:
                 top_p=top_p,
                 max_tokens=max_tokens,
                 context="Extraction",
-                service_tier=service_tier,
             )
 
             extracted_text = bedrock.extract_text_from_response(

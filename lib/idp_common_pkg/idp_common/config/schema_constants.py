@@ -49,40 +49,6 @@ X_AWS_IDP_LIST_ITEM_DESCRIPTION = "x-aws-idp-list-item-description"
 # Original attribute name (preserved from legacy format)
 X_AWS_IDP_ORIGINAL_NAME = "x-aws-idp-original-name"
 
-# ============================================================================
-# Service Tier Constants
-# ============================================================================
-SERVICE_TIER_PRIORITY = "priority"
-SERVICE_TIER_STANDARD = "standard"
-SERVICE_TIER_FLEX = "flex"
-VALID_SERVICE_TIERS = [SERVICE_TIER_PRIORITY, SERVICE_TIER_STANDARD, SERVICE_TIER_FLEX]
-
-
-def normalize_service_tier(tier: str | None) -> str | None:
-    """
-    Normalize and validate service tier value.
-
-    Converts user-facing "standard" to API-compatible "default".
-    Validates against allowed values.
-
-    Args:
-        tier: Service tier value (priority, standard, flex, or None)
-
-    Returns:
-        Normalized tier value for Bedrock API (priority, default, flex, or None)
-    """
-    if not tier:
-        return None
-
-    tier_lower = tier.lower().strip()
-
-    if tier_lower in ["priority", "flex"]:
-        return tier_lower
-    elif tier_lower in ["standard", "default"]:
-        return "default"
-    else:
-        return None
-
 
 # ============================================================================
 # AWS IDP Evaluation Extensions

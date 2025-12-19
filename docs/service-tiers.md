@@ -1,6 +1,6 @@
 # Amazon Bedrock Service Tiers
 
-The GenAI IDP solution supports Amazon Bedrock service tiers, allowing you to optimize for performance and cost by selecting different service tiers for model inference operations.
+The GenAI IDP solution supports Amazon Bedrock service tiers through model ID suffixes, allowing you to optimize for performance and cost by selecting different service tiers for model inference operations.
 
 ## Overview
 
@@ -12,281 +12,227 @@ Amazon Bedrock offers three service tiers for on-demand inference:
 | **Standard** | Consistent performance | Regular pricing | Everyday AI tasks, content generation |
 | **Flex** | Variable latency | Discounted pricing | Batch processing, evaluations, non-urgent workloads |
 
+## Model ID Suffix Format
+
+Service tiers are specified using model ID suffixes:
+
+**Format:** `<base-model-id>[:<service-tier>]`
+
+**Examples:**
+- `us.amazon.nova-2-lite-v1:0` → Standard tier (default, no suffix)
+- `us.amazon.nova-2-lite-v1:0:flex` → Flex tier
+- `us.amazon.nova-2-lite-v1:0:priority` → Priority tier
+- `global.amazon.nova-2-lite-v1:0:flex` → Global model with Flex tier
+
+## Available Models with Service Tiers
+
+The following Nova 2 Lite models are available with service tier suffixes:
+
+**US Region Models:**
+- `us.amazon.nova-2-lite-v1:0` (Standard - default)
+- `us.amazon.nova-2-lite-v1:0:flex` (Flex tier)
+- `us.amazon.nova-2-lite-v1:0:priority` (Priority tier)
+
+**Global Models:**
+- `global.amazon.nova-2-lite-v1:0` (Standard - default)
+- `global.amazon.nova-2-lite-v1:0:flex` (Flex tier)
+- `global.amazon.nova-2-lite-v1:0:priority` (Priority tier)
+
 ## Configuration
 
-### Global Service Tier
+### Using Model IDs with Service Tier Suffixes
 
-Set a default service tier for all operations in your configuration:
-
-```yaml
-# Global default applies to all operations
-service_tier: "standard"
-```
-
-### Operation-Specific Overrides
-
-Override the global setting for specific operations:
+Simply specify the model ID with the desired tier suffix in your configuration:
 
 ```yaml
-# Global default
-service_tier: "standard"
-
-# Operation-specific overrides
 classification:
-  service_tier: "priority"  # Fast classification for real-time workflows
-  model: "us.amazon.nova-pro-v1:0"
+  model: "us.amazon.nova-2-lite-v1:0:priority"  # Fast classification
   # ... other settings
 
 extraction:
-  service_tier: "flex"  # Cost-effective extraction for batch processing
-  model: "us.amazon.nova-pro-v1:0"
+  model: "us.amazon.nova-2-lite-v1:0:flex"  # Cost-effective extraction
   # ... other settings
 
 assessment:
-  service_tier: null  # null = use global default (standard)
-  # ... other settings
-
-summarization:
-  service_tier: "flex"  # Summarization can tolerate longer latency
+  model: "us.amazon.nova-2-lite-v1:0"  # Standard tier (no suffix)
   # ... other settings
 ```
 
-### Valid Values
+### How It Works
 
-- `"priority"` - Fastest response times, premium pricing
-- `"standard"` - Default tier, consistent performance (also accepts `"default"`)
-- `"flex"` - Cost-effective, longer latency
-- `null` or omitted - Uses global default or "standard" if no global set
+When you specify a model ID with a service tier suffix:
+
+1. The system parses the model ID to extract the base model and tier
+2. The base model ID (without suffix) is passed to the Bedrock API
+3. The extracted tier is passed as the `serviceTier` parameter
+4. Example: `us.amazon.nova-2-lite-v1:0:flex` becomes:
+   - Model ID: `us.amazon.nova-2-lite-v1:0`
+   - Service Tier: `flex`
 
 ## Web UI Configuration
 
-### Global Service Tier
+### Selecting Models with Service Tiers
 
 1. Navigate to the Configuration page
-2. Find the "Service Tier (Global Default)" dropdown near the top
-3. Select your preferred tier:
-   - **Standard (Default)** - Consistent performance
-   - **Priority (Fastest)** - Premium speed
-   - **Flex (Cost-Effective)** - Budget-friendly
-4. Changes save automatically
+2. In each operation section (Classification, Extraction, Assessment, Summarization):
+   - Find the "Model" dropdown
+   - Select a model with the desired tier suffix:
+     - Models ending in `:flex` use Flex tier
+     - Models ending in `:priority` use Priority tier
+     - Models without suffix use Standard tier
+3. Changes save automatically
 
-### Operation-Specific Overrides
+The model dropdown will show all available models including those with tier suffixes.
 
-Within each operation section (Classification, Extraction, Assessment, Summarization):
-
-1. Find the "Service Tier Override" dropdown
-2. Select an option:
-   - **Use Global Default** - Inherit global setting
-   - **Priority (Fastest)** - Override with priority
-   - **Standard** - Override with standard
-   - **Flex (Cost-Effective)** - Override with flex
-3. The UI shows the current effective tier
-
-## CLI Usage
-
-### Deployment
-
-Specify service tier during stack deployment:
-
-```bash
-idp-cli deploy \
-    --stack-name my-idp-stack \
-    --pattern pattern-2 \
-    --admin-email user@example.com \
-    --service-tier flex
-```
-
-### Batch Processing
-
-Override service tier for a specific batch:
-
-```bash
-idp-cli run-inference \
-    --stack-name my-idp-stack \
-    --dir ./documents/ \
-    --service-tier priority \
-    --monitor
-```
-
-**Note:** CLI service tier parameter sets the global default in configuration. For operation-specific control, use configuration files or the Web UI.
-
-## Use Case Recommendations
+## Use Cases and Recommendations
 
 ### Priority Tier
-
 **When to use:**
-- Customer-facing chat assistants
-- Real-time document processing
-- Interactive AI applications
+- Customer-facing document processing
+- Real-time classification needs
+- Interactive applications
 - Time-sensitive workflows
 
 **Example configuration:**
 ```yaml
-service_tier: "priority"  # All operations use priority
+classification:
+  model: "us.amazon.nova-2-lite-v1:0:priority"
+  # Fast classification for real-time user uploads
 ```
 
-### Standard Tier
-
+### Standard Tier (Default)
 **When to use:**
 - General document processing
-- Content generation
-- Text analysis
-- Routine workflows
+- Balanced performance and cost
+- Most production workloads
+- Default choice when unsure
 
 **Example configuration:**
 ```yaml
-service_tier: "standard"  # Default, no configuration needed
+extraction:
+  model: "us.amazon.nova-2-lite-v1:0"
+  # No suffix = standard tier
 ```
 
 ### Flex Tier
-
 **When to use:**
 - Batch document processing
-- Model evaluations
-- Content summarization
-- Non-urgent workflows
-- Cost optimization
+- Evaluation and testing workflows
+- Non-urgent background jobs
+- Cost optimization scenarios
 
 **Example configuration:**
 ```yaml
-service_tier: "flex"  # All operations use flex
-
-# Or mixed approach
-service_tier: "standard"  # Global default
-classification:
-  service_tier: "priority"  # Fast classification
 extraction:
-  service_tier: "flex"  # Cost-effective extraction
+  model: "us.amazon.nova-2-lite-v1:0:flex"
+  # Cost-effective for batch processing
 ```
 
 ## Mixed Tier Strategy
 
-Optimize cost and performance by using different tiers for different operations:
+You can use different tiers for different operations:
 
 ```yaml
-# Global default for most operations
-service_tier: "standard"
-
-# Fast classification for real-time user experience
 classification:
-  service_tier: "priority"
-  model: "us.amazon.nova-pro-v1:0"
+  model: "us.amazon.nova-2-lite-v1:0:priority"
+  # Fast classification for user experience
 
-# Standard extraction (inherit global)
 extraction:
-  service_tier: null  # Uses global "standard"
-  model: "us.amazon.nova-pro-v1:0"
+  model: "us.amazon.nova-2-lite-v1:0:flex"
+  # Cost-effective extraction (can tolerate latency)
 
-# Cost-effective assessment (can tolerate latency)
 assessment:
-  service_tier: "flex"
-  model: "us.amazon.nova-lite-v1:0"
-
-# Cost-effective summarization (non-critical)
-summarization:
-  service_tier: "flex"
-  model: "us.amazon.nova-premier-v1:0"
+  model: "us.amazon.nova-2-lite-v1:0"
+  # Standard tier for assessment
 ```
 
 ## Performance Expectations
 
-### Priority Tier
-- Up to 25% better output tokens per second (OTPS) latency vs standard
-- Requests prioritized over other tiers
-- Best for latency-sensitive applications
+Based on AWS documentation:
 
-### Standard Tier
-- Consistent baseline performance
-- Suitable for most workloads
-- Balanced cost and performance
+- **Priority**: Up to 25% better OTPS (Output Tokens Per Second) latency vs Standard
+- **Standard**: Consistent baseline performance
+- **Flex**: Variable latency, suitable for batch workloads where speed is less critical
 
-### Flex Tier
-- Variable latency (longer than standard)
-- Pricing discount over standard
-- Suitable for batch and background processing
+Actual performance varies by:
+- Model size and complexity
+- Request payload size
+- Current system load
+- AWS region
 
 ## Cost Implications
 
-- **Priority**: ~25% premium over standard pricing
-- **Standard**: Regular on-demand pricing (baseline)
-- **Flex**: Discounted pricing (varies by model)
+- **Priority**: ~25% premium over Standard pricing
+- **Standard**: Baseline pricing (reference point)
+- **Flex**: Discounted pricing compared to Standard
 
-Use the [AWS Pricing Calculator](https://calculator.aws/#/createCalculator/bedrock) to estimate costs for different service tiers.
+**Important:** Always refer to the [AWS Pricing Calculator](https://calculator.aws) for current pricing information.
 
 ## Monitoring
 
-### CloudWatch Metrics
-
-Service tier usage is tracked in CloudWatch metrics:
-- Dimension: `ServiceTier` shows requested tier
-- Dimension: `ResolvedServiceTier` shows actual tier that served the request
-
 ### CloudWatch Logs
 
-Service tier information appears in Lambda function logs:
+Service tier information appears in CloudWatch logs:
+
 ```
-Using service tier: default
+Using service tier: flex
+Extracted service tier 'flex' from model ID. Using base model ID: us.amazon.nova-2-lite-v1:0
 ```
 
-Look for this log message in:
-- OCR function logs
-- Classification function logs
-- Extraction function logs
-- Assessment function logs
-- Summarization function logs
+### Metrics
 
-## Model Support
+CloudWatch metrics include service tier as a dimension, allowing you to:
+- Track usage by tier
+- Compare performance across tiers
+- Analyze cost by tier
 
-Not all models support all service tiers. Check the [Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/service-tiers-inference.html) for current model support.
+## Troubleshooting
 
-**Supported models include:**
-- Amazon Nova models (Pro, Lite, Premier)
-- Anthropic Claude models
+### Model ID Not Recognized
+
+**Problem:** Model with tier suffix not working
+
+**Solution:** Verify the model ID format:
+- Correct: `us.amazon.nova-2-lite-v1:0:flex`
+- Incorrect: `us.amazon.nova-2-lite-v1:0-flex`
+- Incorrect: `us.amazon.nova-2-lite-v1:0_flex`
+
+### Service Tier Not Applied
+
+**Problem:** Service tier not being used
+
+**Solution:** Check CloudWatch logs for:
+- "Extracted service tier" messages
+- "Using service tier" messages
+- Verify model ID includes tier suffix
+
+### Invalid Tier Suffix
+
+**Problem:** Using unsupported tier suffix
+
+**Solution:** Only `flex` and `priority` suffixes are supported. Standard tier is the default (no suffix needed).
+
+## Best Practices
+
+1. **Start with Standard**: Use standard tier (no suffix) as your baseline
+2. **Optimize Selectively**: Add tier suffixes only where needed
+3. **Monitor Costs**: Track spending by tier using CloudWatch metrics
+4. **Test Performance**: Measure actual latency differences for your workload
+5. **Use Flex for Batch**: Leverage Flex tier for non-urgent batch processing
+6. **Reserve Priority**: Use Priority tier only for latency-sensitive operations
+
+## Model Compatibility
+
+Not all Bedrock models support all service tiers. Priority and Flex tiers are supported by:
+- Amazon Nova models
 - OpenAI models
 - Qwen models
 - DeepSeek models
 
-## Troubleshooting
-
-### Service Tier Not Applied
-
-**Symptom:** Logs don't show service tier being used
-
-**Solutions:**
-1. Verify service_tier is set in configuration
-2. Check for typos in tier name (must be: priority, standard, or flex)
-3. Ensure configuration is saved and loaded correctly
-4. Check CloudWatch logs for validation warnings
-
-### Invalid Service Tier Warning
-
-**Symptom:** Log shows "Invalid service_tier value"
-
-**Solutions:**
-1. Use only valid values: priority, standard, flex
-2. Check for extra spaces or incorrect casing
-3. Verify YAML syntax is correct
-
-### Model Not Supported
-
-**Symptom:** Bedrock API returns error about unsupported service tier
-
-**Solutions:**
-1. Check model supports the selected tier
-2. Refer to AWS documentation for model support matrix
-3. Fall back to standard tier for unsupported models
-
-## Best Practices
-
-1. **Start with Standard**: Use standard tier as baseline, then optimize
-2. **Monitor Costs**: Track usage by tier in CloudWatch and AWS Cost Explorer
-3. **Test Performance**: Compare latency across tiers for your workload
-4. **Mixed Strategy**: Use priority for critical paths, flex for batch operations
-5. **Document Decisions**: Note why specific tiers chosen for each operation
+If a model doesn't support the specified tier, the Bedrock API will return an error.
 
 ## Additional Resources
 
-- [Amazon Bedrock Service Tiers User Guide](https://docs.aws.amazon.com/bedrock/latest/userguide/service-tiers-inference.html)
-- [Service Tiers API Reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_ServiceTier.html)
-- [AWS Blog: Service Tiers Announcement](https://aws.amazon.com/blogs/aws/new-amazon-bedrock-service-tiers-help-you-match-ai-workload-performance-with-cost/)
-- [AWS Pricing Calculator](https://calculator.aws/#/createCalculator/bedrock)
+- [AWS Bedrock Service Tiers Documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/service-tiers-inference.html)
+- [AWS Pricing Calculator](https://calculator.aws)
+- [GenAI IDP Configuration Guide](./configuration.md)

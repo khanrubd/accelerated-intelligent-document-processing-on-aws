@@ -745,7 +745,6 @@ class GranularAssessmentService:
         top_k: float,
         top_p: float,
         max_tokens: Optional[int],
-        service_tier: Optional[str] = None,
     ) -> AssessmentResult:
         """
         Process a single assessment task.
@@ -760,7 +759,6 @@ class GranularAssessmentService:
             top_k: Top-k parameter
             top_p: Top-p parameter
             max_tokens: Max tokens parameter
-            service_tier: Service tier for Bedrock API
 
         Returns:
             Assessment result
@@ -787,7 +785,6 @@ class GranularAssessmentService:
                 top_p=top_p,
                 max_tokens=max_tokens,
                 context="GranularAssessment",
-                service_tier=service_tier,
             )
 
             # Extract text from response
@@ -1587,13 +1584,6 @@ class GranularAssessmentService:
             max_tokens = self.config.assessment.max_tokens
             system_prompt = self.config.assessment.system_prompt
 
-            # Get service tier from config (operation-specific or global)
-            service_tier = None
-            if hasattr(self.config.assessment, "service_tier"):
-                service_tier = self.config.assessment.service_tier
-            if not service_tier and hasattr(self.config, "service_tier"):
-                service_tier = self.config.service_tier
-
             # Get schema for this document class
             class_schema = self._get_class_schema(class_label)
             if not class_schema:
@@ -1679,7 +1669,6 @@ class GranularAssessmentService:
                                 top_k,
                                 top_p,
                                 max_tokens,
-                                service_tier,
                             ): task
                             for task in tasks_to_process
                         }
@@ -1732,7 +1721,6 @@ class GranularAssessmentService:
                                 top_k,
                                 top_p,
                                 max_tokens,
-                                service_tier,
                             )
                             all_task_results.append(result)
 

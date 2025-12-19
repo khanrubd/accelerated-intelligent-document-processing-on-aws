@@ -26,7 +26,6 @@ import useConfiguration from '../../hooks/use-configuration';
 import useConfigurationLibrary from '../../hooks/use-configuration-library';
 import useSettingsContext from '../../contexts/settings';
 import ConfigBuilder from './ConfigBuilder';
-import GlobalServiceTierSection from './GlobalServiceTierSection';
 import { deepMerge } from '../../utils/configUtils';
 
 const ConfigurationLayout = () => {
@@ -1468,7 +1467,6 @@ const ConfigurationLayout = () => {
           <Box padding="s">
             {viewMode === 'form' && (
               <SpaceBetween size="l">
-                <GlobalServiceTierSection configuration={formValues} onConfigChange={handleFormChange} />
                 <ConfigBuilder
                   schema={{
                     ...schema,

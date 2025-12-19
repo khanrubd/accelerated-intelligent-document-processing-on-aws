@@ -26,6 +26,8 @@ from botocore.exceptions import (
 )
 from urllib3.exceptions import ReadTimeoutError as Urllib3ReadTimeoutError
 
+from .model_utils import parse_model_id
+
 
 # Dummy exception classes for requests timeouts if requests is not available
 class _RequestsReadTimeout(Exception):
@@ -440,21 +442,34 @@ class BedrockClient:
                 additional_model_fields = {}
             additional_model_fields["anthropic_beta"] = ["context-1m-2025-08-07"]
 
+        # Parse model ID to extract service tier from suffix
+        base_model_id, tier_from_suffix = parse_model_id(use_model_id)
+
+        # Use tier from model ID suffix if present, otherwise use service_tier parameter
+        effective_service_tier = tier_from_suffix or service_tier
+
+        # Update use_model_id to base model ID (without tier suffix)
+        if tier_from_suffix:
+            use_model_id = base_model_id
+            logger.info(
+                f"Extracted service tier '{tier_from_suffix}' from model ID. Using base model ID: {base_model_id}"
+            )
+
         # If no additional model fields were added, set to None
         if not additional_model_fields:
             additional_model_fields = None
 
         # Normalize and validate service tier
         normalized_service_tier = None
-        if service_tier:
-            tier_lower = service_tier.lower().strip()
+        if effective_service_tier:
+            tier_lower = effective_service_tier.lower().strip()
             if tier_lower in ["priority", "flex"]:
                 normalized_service_tier = tier_lower
             elif tier_lower in ["standard", "default"]:
                 normalized_service_tier = "default"
             else:
                 logger.warning(
-                    f"Invalid service_tier value '{service_tier}'. "
+                    f"Invalid service_tier value '{effective_service_tier}'. "
                     f"Valid values are: priority, standard, flex. Using default tier."
                 )
 
