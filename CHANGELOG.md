@@ -5,6 +5,63 @@ SPDX-License-Identifier: MIT-0
 
 ## [Unreleased]
 
+### Added
+
+- **OmniAI OCR Benchmark Dataset Auto-Deployment for Test Studio**
+  - Automatically deploys 293 document images from OmniAI OCR Benchmark HuggingFace dataset (https://huggingface.co/datasets/getomni-ai/ocr-benchmark) during stack deployment
+  - **9 Document Formats**: BANK_CHECK (52), COMMERCIAL_LEASE_AGREEMENT (52), CREDIT_CARD_STATEMENT (11), DELIVERY_NOTE (8), EQUIPMENT_INSPECTION (11), GLOSSARY (31), PETITION_FORM (51), REAL_ESTATE (59), SHIFT_SCHEDULE (18)
+  - Pre-selected images filtered for formats with >5 samples per schema for quality benchmarking
+  - Complex nested JSON schemas with objects and arrays matching original HuggingFace dataset structure
+  - Test set available in Test Studio UI alongside existing RealKIE-FCC-Verified dataset
+  - Corresponding config: `config_library/pattern-2/ocr-benchmark/config.yaml` with all 9 document classes
+  - Ideal for testing classification across diverse document types and extraction on complex nested schemas
+  
+- **GovCloud Configuration Library for Pattern-1 and Pattern-2** - [GitHub Issue #162](https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/162)
+  - Added `lending-package-sample-govcloud` configurations for both Pattern-1 and Pattern-2 with GovCloud-compatible model IDs
+  - **Model ID Mappings for GovCloud**:
+    - `us.amazon.nova-pro-v1:0` → `amazon.nova-pro-v1:0`
+    - `us.amazon.nova-lite-v1:0` → `amazon.nova-lite-v1:0`
+    - All other models (Claude, Nova Premier) → `anthropic.claude-3-7-sonnet-20250219-v1:0`
+  - Enhanced `generate_govcloud_template.py` to automatically set GovCloud configurations as default when generating GovCloud templates
+  - **Automatic Integration**: GovCloud templates now default to `lending-package-sample-govcloud` configuration ensuring proper model IDs without manual configuration
+
+- **Abort Workflow Feature for Stopping In-Progress Document Processing**
+  - Added ability to abort document processing workflows directly from the Web UI
+  - New "Abort" button available for documents with in-progress status, with confirmation modal to prevent accidental aborts
+  - GraphQL mutation `abortWorkflow` enables programmatic workflow cancellation
+  - Documents aborted mid-processing are marked with ABORTED status for clear tracking and reporting
+
+- **Global Cross-Region Inference Profile Model Support**
+  - Added support for Bedrock global inference profile models enabling cross-region model access
+  - **Supported Global Models**:
+    - Amazon Nova 2 Lite (`global.amazon.nova-2-lite-v1:0`)
+    - Claude Haiku 4.5 (`global.anthropic.claude-haiku-4-5-20251001-v1:0`)
+    - Claude Sonnet 4.5 (`global.anthropic.claude-sonnet-4-5-20250929-v1:0`)
+    - Claude Sonnet 4.5 - Long Context (`global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m`)
+    - Claude Opus 4.5 (`global.anthropic.claude-opus-4-5-20251101-v1:0`)
+  - All global models support prompt caching functionality
+  - Enables seamless cross-region model invocation without specifying regional endpoints
+
+### Changed
+
+- **Updated Sample Configurations to Use Amazon Nova 2 Lite as Default Model, and remove Textract TABLES, SIGNATURE features**
+  - Changed default model to `us.amazon.nova-2-lite-v1:0` for classification, extraction, summarization, and evaluation across all sample configurations in the configuration library
+  - Remove Textract TABLES and SIGNATURES options from default config
+  - Provides improved cost-efficiency while maintaining strong performance for document processing workflows
+
+- **Improved Publish Script User Experience**
+  - Added spinner progress indicators for SAM build and SAM package operations showing real-time elapsed time
+  - Added timing metrics summary showing build/package/total duration for main template builds
+  - Output now provides visual feedback during long-running operations instead of appearing silent
+  - Enabled parallel SAM builds (`sam build --parallel`) for significantly faster build times (~73s vs 4+ minutes)
+  - Pre-built wheel approach for idp_common package eliminates race conditions during parallel Lambda builds
+
+- **RealKIE-FCC-Verified Dataset Schema Alignment with HuggingFace**
+  - Updated `config_library/pattern-2/realkie-fcc-verified/config.yaml` to match the HuggingFace json_schema exactly
+  - Changed `LineItemDays` from array type with enum values to simple string type (matching raw HuggingFace data format)
+  - Updated field descriptions to match HuggingFace schema (e.g., "The agency the invoice is addressed to")
+
+
 ## [0.4.8]
 
 ### Added

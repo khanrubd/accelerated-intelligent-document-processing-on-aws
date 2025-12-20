@@ -541,6 +541,11 @@ Resources:
                   - "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m"
                   - "eu.anthropic.claude-opus-4-5-20251101-v1:0"
                   - "qwen.qwen3-vl-235b-a22b"
+                  - "global.amazon.nova-2-lite-v1:0"
+                  - "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+                  - "global.anthropic.claude-sonnet-4-5-20250929-v1:0"
+                  - "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m"
+                  - "global.anthropic.claude-opus-4-5-20251101-v1:0"
                 order: 2
                 dependsOn: { field: "backend", value: "bedrock" }
               system_prompt:
@@ -875,6 +880,11 @@ Resources:
                   - "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m"
                   - "eu.anthropic.claude-opus-4-5-20251101-v1:0"
                   - "qwen.qwen3-vl-235b-a22b"
+                  - "global.amazon.nova-2-lite-v1:0"
+                  - "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+                  - "global.anthropic.claude-sonnet-4-5-20250929-v1:0"
+                  - "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m"
+                  - "global.anthropic.claude-opus-4-5-20251101-v1:0"
                 order: 1
               classificationMethod:
                 type: string
@@ -1017,6 +1027,11 @@ Resources:
                   - "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m"
                   - "eu.anthropic.claude-opus-4-5-20251101-v1:0"
                   - "qwen.qwen3-vl-235b-a22b"
+                  - "global.amazon.nova-2-lite-v1:0"
+                  - "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+                  - "global.anthropic.claude-sonnet-4-5-20250929-v1:0"
+                  - "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m"
+                  - "global.anthropic.claude-opus-4-5-20251101-v1:0"
                 order: 1
               temperature:
                 type: number
@@ -1155,7 +1170,12 @@ Resources:
                     "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
                     "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
                     "eu.anthropic.claude-opus-4-5-20251101-v1:0",
-                    "qwen.qwen3-vl-235b-a22b"
+                    "qwen.qwen3-vl-235b-a22b",
+                    "global.amazon.nova-2-lite-v1:0",
+                    "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                    "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                    "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                    "global.anthropic.claude-opus-4-5-20251101-v1:0"
                   ]
                 order: 5
               temperature:
@@ -1225,7 +1245,12 @@ Resources:
                     "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
                     "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
                     "eu.anthropic.claude-opus-4-5-20251101-v1:0",
-                    "qwen.qwen3-vl-235b-a22b"
+                    "qwen.qwen3-vl-235b-a22b",
+                    "global.amazon.nova-2-lite-v1:0",
+                    "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                    "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                    "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                    "global.anthropic.claude-opus-4-5-20251101-v1:0"
                   ]
                 order: 1
               temperature:
@@ -1299,6 +1324,11 @@ Resources:
                         "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
                         "eu.anthropic.claude-opus-4-5-20251101-v1:0",
                         "qwen.qwen3-vl-235b-a22b",
+                        "global.amazon.nova-2-lite-v1:0",
+                        "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                        "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                        "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                        "global.anthropic.claude-opus-4-5-20251101-v1:0"
                       ]
                     order: 1
                   temperature:
@@ -1372,7 +1402,12 @@ Resources:
                         "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
                         "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
                         "eu.anthropic.claude-opus-4-5-20251101-v1:0",
-                        "qwen.qwen3-vl-235b-a22b"
+                        "qwen.qwen3-vl-235b-a22b",
+                        "global.amazon.nova-2-lite-v1:0",
+                        "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                        "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                        "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                        "global.anthropic.claude-opus-4-5-20251101-v1:0"
                       ]
                     default: "us.amazon.nova-pro-v1:0"
                     order: 0
@@ -1446,7 +1481,12 @@ Resources:
                         "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
                         "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
                         "eu.anthropic.claude-opus-4-5-20251101-v1:0",
-                        "qwen.qwen3-vl-235b-a22b"
+                        "qwen.qwen3-vl-235b-a22b",
+                        "global.amazon.nova-2-lite-v1:0",
+                        "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                        "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                        "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                        "global.anthropic.claude-opus-4-5-20251101-v1:0"
                       ]
                     default: "us.amazon.nova-pro-v1:0"
                     order: 0
@@ -1509,7 +1549,46 @@ Resources:
                   model_id:
                     type: string
                     description: Model ID for the chat companion agents
-                    enum: ["us.amazon.nova-lite-v1:0", "us.amazon.nova-pro-v1:0", "us.amazon.nova-premier-v1:0", "us.amazon.nova-2-lite-v1:0", "us.amazon.nova-2-lite-v1:0:priority", "us.amazon.nova-2-lite-v1:0:flex", "global.amazon.nova-2-lite-v1:0", "global.amazon.nova-2-lite-v1:0:priority", "global.amazon.nova-2-lite-v1:0:flex", "us.anthropic.claude-3-haiku-20240307-v1:0", "us.anthropic.claude-haiku-4-5-20251001-v1:0", "us.anthropic.claude-3-5-sonnet-20241022-v2:0", "us.anthropic.claude-3-7-sonnet-20250219-v1:0", "us.anthropic.claude-sonnet-4-20250514-v1:0", "us.anthropic.claude-sonnet-4-5-20250929-v1:0", "us.anthropic.claude-opus-4-20250514-v1:0", "us.anthropic.claude-opus-4-1-20250805-v1:0", "us.anthropic.claude-opus-4-5-20251101-v1:0", "eu.amazon.nova-lite-v1:0", "eu.amazon.nova-pro-v1:0", "eu.amazon.nova-2-lite-v1:0", "eu.amazon.nova-2-lite-v1:0:priority", "eu.amazon.nova-2-lite-v1:0:flex", "eu.anthropic.claude-3-haiku-20240307-v1:0", "eu.anthropic.claude-haiku-4-5-20251001-v1:0", "eu.anthropic.claude-3-5-sonnet-20241022-v2:0", "eu.anthropic.claude-3-7-sonnet-20250219-v1:0", "eu.anthropic.claude-sonnet-4-20250514-v1:0",  "eu.anthropic.claude-sonnet-4-5-20250929-v1:0", "eu.anthropic.claude-opus-4-5-20251101-v1:0", "qwen.qwen3-vl-235b-a22b"]
+                    enum: [
+                      "us.amazon.nova-lite-v1:0",
+                      "us.amazon.nova-pro-v1:0",
+                      "us.amazon.nova-premier-v1:0",
+                      "us.amazon.nova-2-lite-v1:0",
+                      "us.amazon.nova-2-lite-v1:0:priority",
+                      "us.amazon.nova-2-lite-v1:0:flex",
+                      "global.amazon.nova-2-lite-v1:0",
+                      "global.amazon.nova-2-lite-v1:0:priority",
+                      "global.amazon.nova-2-lite-v1:0:flex",
+                      "us.anthropic.claude-3-haiku-20240307-v1:0",
+                      "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+                      "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+                      "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+                      "us.anthropic.claude-sonnet-4-20250514-v1:0",
+                      "us.anthropic.claude-sonnet-4-20250514-v1:0:1m",
+                      "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                      "us.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                      "us.anthropic.claude-opus-4-20250514-v1:0",
+                      "us.anthropic.claude-opus-4-1-20250805-v1:0",
+                      "us.anthropic.claude-opus-4-5-20251101-v1:0",
+                      "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                      "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                      "global.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                      "global.anthropic.claude-opus-4-5-20251101-v1:0",
+                      "eu.amazon.nova-lite-v1:0",
+                      "eu.amazon.nova-pro-v1:0",
+                      "eu.amazon.nova-2-lite-v1:0",
+                      "eu.amazon.nova-2-lite-v1:0:priority",
+                      "eu.amazon.nova-2-lite-v1:0:flex",
+                      "eu.anthropic.claude-3-haiku-20240307-v1:0",
+                      "eu.anthropic.claude-haiku-4-5-20251001-v1:0",
+                      "eu.anthropic.claude-3-5-sonnet-20241022-v2:0",
+                      "eu.anthropic.claude-3-7-sonnet-20250219-v1:0",
+                      "eu.anthropic.claude-sonnet-4-20250514-v1:0",
+                      "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                      "eu.anthropic.claude-sonnet-4-5-20250929-v1:0:1m",
+                      "eu.anthropic.claude-opus-4-5-20251101-v1:0",
+                      "qwen.qwen3-vl-235b-a22b"
+                    ]
                     default: "us.anthropic.claude-haiku-4-5-20251001-v1:0"
                     order: 0
               error_analyzer:
